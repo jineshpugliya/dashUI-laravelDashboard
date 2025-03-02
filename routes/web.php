@@ -33,25 +33,27 @@ Route::get('/dash', function () {
     return view('admin.index');
 });
 
+
+// dd(auth()->user());
+
 Route::group([
     'middleware' => ['auth', 'role:SuperAdmin|Admin|Manager', 'permission:AdminPanel access'],
     'namespace'  => 'App\Http\Controllers\Admin',
     'prefix'     => 'admin',
     'as'         => 'admin.'
-    ], function() {
+], function () {
     Route::get('/', [Index::class, 'index'])->name('dashboard');
 
     Route::resource('profile', 'ProfileController');
     Route::patch('profile/{user}/passUpdate', [ProfileController::class, 'passUpdate'])->name('profile.passUpdate');
     Route::patch('profile/{user}/othersUpdate', [ProfileController::class, 'othersUpdate'])->name('profile.othersUpdate');
 
-    Route::resource('roles','RoleController');
-    Route::resource('permissions','PermissionController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('permissions', 'PermissionController');
 
-    Route::resource('users','UserController');
+    Route::resource('users', 'UserController');
     Route::patch('users/{user}/passUpdate', [UserController::class, 'passUpdate'])->name('users.passUpdate');
     Route::patch('users/{user}/othersUpdate', [UserController::class, 'othersUpdate'])->name('users.othersUpdate');
-
 });
 
 

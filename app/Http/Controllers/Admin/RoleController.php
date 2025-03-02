@@ -12,9 +12,9 @@ class RoleController extends Controller
 {
     function __construct()
     {
-        $this->middleware('role_or_permission:SuperAdmin|Role access|Role create|Role edit|Role delete', ['only' => ['index','show']]);
-        $this->middleware('role_or_permission:SuperAdmin|Role create', ['only' => ['create','store']]);
-        $this->middleware('role_or_permission:SuperAdmin|Role edit', ['only' => ['edit','update']]);
+        $this->middleware('role_or_permission:SuperAdmin|Role access|Role create|Role edit|Role delete', ['only' => ['index', 'show']]);
+        $this->middleware('role_or_permission:SuperAdmin|Role create', ['only' => ['create', 'store']]);
+        $this->middleware('role_or_permission:SuperAdmin|Role edit', ['only' => ['edit', 'update']]);
         $this->middleware('role_or_permission:SuperAdmin|Role delete', ['only' => ['destroy']]);
     }
 
@@ -48,9 +48,9 @@ class RoleController extends Controller
      */
     public function store(Request $request, FlasherInterface $flasher)
     {
-        $request->validate(['name'=>'required']);
+        $request->validate(['name' => 'required']);
 
-        $role = Role::create(['name'=>$request->name]);
+        $role = Role::create(['name' => $request->name]);
 
         $role->syncPermissions($request->permissions);
 
@@ -86,7 +86,6 @@ class RoleController extends Controller
             $flasher->addError('Not Allowed', 'Dash UI');
             return redirect(route('admin.roles.index'));
         }
-
     }
 
     /**
@@ -99,10 +98,10 @@ class RoleController extends Controller
     public function update(Request $request, $id, FlasherInterface $flasher)
     {
         $role = Role::findOrFail($id);
-        $role->update(['name'=>$request->name]);
+        $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
 
-        $flasher->addInfo('Role "'.$role->name.'" Updated.', 'Dash UI');
+        $flasher->addInfo('Role "' . $role->name . '" Updated.', 'Dash UI');
 
         return redirect(route('admin.roles.index'));
     }
